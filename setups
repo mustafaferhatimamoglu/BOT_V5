@@ -5,4 +5,6 @@ apt install unixodbc-dev -y
 pip install binance-connector
 pip install binance-futures-connector
 
+pip install python-binance
+
 pip install python-telegram-bot --upgrade
