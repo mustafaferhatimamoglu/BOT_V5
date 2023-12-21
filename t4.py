@@ -10,7 +10,7 @@ um_futures_client = UMFutures()
 #logging.info(um_futures_client.klines("BTCUSDT", "1m"))
 #print(um_futures_client.klines("BTCUSDT", "1m",limit=10))
 
-kline_response = um_futures_client.klines("BTCUSDT", "1m",limit=3)
+kline_response = um_futures_client.klines("BTCUSDT", "1m",limit=3,)
 for kline in kline_response:
     open_time = kline[0]
     open_price = kline[1]
