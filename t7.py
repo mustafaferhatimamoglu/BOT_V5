@@ -2,7 +2,7 @@ from Operations import Databases
 
 
 
-#Databases.CreateTable_KlineData('BTCUSDT','1m')
+Databases.CreateTable_KlineData('BTCUSDT','1m')
 
 
 
@@ -16,4 +16,4 @@ from Operations import Databases
     
 # pause()
 
-Databases.get_KlineData_2_MsSql('BTCUSDT','1d',0)
+#Databases.get_KlineData_2_MsSql('BTCUSDT','1d',0)

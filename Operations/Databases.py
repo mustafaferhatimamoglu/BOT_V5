@@ -65,7 +65,9 @@ CREATE TABLE [dbo].[{0}](
             Common.pause()
     # Delete Last One
     DeleteLastOne(identifier)
-    GetLastTime_PlusOne(identifier)
+    startTime = GetLastTime_PlusOne(identifier)
+    print(startTime)
+    get_KlineData_2_MsSql(var_CoinName, var_Interval,startTime)
     # Fill KlineData
 
 def SQL_Insert(sql_Query):
@@ -97,14 +99,16 @@ def DeleteLastOne(identifier):
                 """.format(
             identifier
         )
-        # print(sql_Query)
+        print(sql_Query)
         cursor.execute(sql_Query)
-        conn.commit()
+        #conn.commit()
     except Exception as exp:
         if str(exp).startswith(
             "Cannot commit transaction: (3902, b'The COMMIT TRANSACTION request has no corresponding BEGIN"
         ):
-            print("Handled-")
+            print("Handled-NOT")
+            print(exp)
+            Common.pause()
         else:
             print(exp)
             Common.pause()
@@ -112,8 +116,10 @@ def DeleteLastOne(identifier):
 
 def SQL_Select2String(sql_Query):
     cursor.execute(sql_Query)
-    records = cursor.fetchall()
-    # print(records)
+    records = cursor.fetchall()[0]['Kline_close_time']
+    
+    print(records)
+    return records
 
 
 import logging
@@ -183,9 +189,9 @@ def get_KlineData_2_MsSql(var_CoinName, var_Interval, var_starttime):
             # Taker Buy Quote Asset Volume: {taker_buy_quote_asset_volume}")
             counter_kline += 1
             string_Insert += """
-INSERT INTO [dbo].[BTCUSDT_1m] ([Kline_open_time],[Open_price],[High_price],[Low_price],[Close_price],[Volume],[Kline_close_time],[Quote_asset_volume],[Number_of_trades],[Taker_buy_base_asset_volume],[Taker_buy_quote_asset_volume]) VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10})
+INSERT INTO [dbo].[{11}_{12}] ([Kline_open_time],[Open_price],[High_price],[Low_price],[Close_price],[Volume],[Kline_close_time],[Quote_asset_volume],[Number_of_trades],[Taker_buy_base_asset_volume],[Taker_buy_quote_asset_volume]) VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10})
             """.format(
-                kline[0],kline[1],kline[2],kline[3],kline[4],kline[5],kline[6],kline[7],kline[8],kline[9],kline[10],
+                kline[0],kline[1],kline[2],kline[3],kline[4],kline[5],kline[6],kline[7],kline[8],kline[9],kline[10],var_CoinName, var_Interval,
             )
             if serverTime < kline[6]:
                 print(counter_kline)
